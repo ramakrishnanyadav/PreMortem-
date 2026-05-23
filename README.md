@@ -112,5 +112,4 @@ npm run dev
 ```
 
 ---
-
-*Designed for highly available, mission-critical infrastructure environments. Built for the Indianext Hackathon.*
+*Designed for highly available, mission-critical infrastructure environments.*
