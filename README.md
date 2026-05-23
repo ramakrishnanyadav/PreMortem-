@@ -10,6 +10,12 @@
 
 <br/>
 
+## 🔴 The Early Warning Advantage (Live Demo)
+
+Watch PreMortem predict an infrastructure failure before the end-user is impacted. Notice the **Early Warning Gap** on the timeline scrubber.
+
+![PreMortem Incident Replay Demo](assets/demo.webp)
+
 ## Executive Summary
 
 Modern distributed infrastructure operates at a scale where traditional, reactive observability is no longer sufficient. Static alerting thresholds generate extreme operational noise and, fundamentally, only notify Site Reliability Engineering (SRE) teams *after* a critical P0 incident has already impacted the end-user.
@@ -17,6 +23,33 @@ Modern distributed infrastructure operates at a scale where traditional, reactiv
 **PreMortem™** fundamentally transforms infrastructure observability from a reactive debugging process into a predictive intelligence system. By combining high-frequency telemetry ingestion with a mathematical anomaly ensemble and deterministic causal graphing, PreMortem triggers an AI reasoning layer to predict catastrophic failures **before** they propagate to the end-user.
 
 We provide enterprise engineering teams with the ultimate operational advantage: **The Early Warning Gap.**
+
+---
+
+## 🏗 System Architecture Flow
+
+```mermaid
+graph TD
+    A[High-Frequency Telemetry Pollers] -->|Raw Metrics| B(Thread-Safe Circular Buffers)
+    B --> C{Statistical Detection Ensemble}
+    
+    C -->|Z-Score Spike| D(Anomaly Aggregator)
+    C -->|CUSUM Drift| D
+    C -->|Isolation Forest| D
+    
+    B --> E[Correlation + Granger Causality Engine]
+    E -->|Causal Weights| F((Dynamic Dependency Graph))
+    
+    D -->|Anomaly Payload| G{Cascade Risk Scorer}
+    F -->|Topological Map| G
+    
+    G -->|Context + Signals| H[Llama-3.3-70b AI Reasoning Layer]
+    H -->|RAG Grounding| I[(ChromaDB Pattern Store)]
+    I -->|Historical Incident Context| H
+    
+    H -->|Prediction JSON| J((WebSocket Broadcaster))
+    J -->|Sub-second Latency| K[PreMortem 'War Room' UI]
+```
 
 ---
 
@@ -31,27 +64,25 @@ Static thresholds fail in dynamic, noisy cloud environments. PreMortem utilizes 
 ### 2. Causal Intelligence Topology
 Correlation does not equal causation. PreMortem implements a rigorous **Granger Causality** algorithm to mathematically prove *directional causation* (e.g., establishing that a spike in Database Latency is actively causing a downstream spike in API Latency). Coupled with a **Cascade BFS Scorer**, the system automatically calculates the exact "blast radius" of an impending failure.
 
-### 3. Grounded AI Reasoning (Llama 3.3 70B)
+### 3. Grounded AI Reasoning (Llama 3.3 70b)
 PreMortem does not utilize AI as a generic chatbot. The reasoning layer is only triggered when mathematical thresholds validate a causal anomaly cluster.
 *   **Zero-Hallucination Pipeline:** The AI is strictly grounded against a `ChromaDB` vector store containing historical, verified incident patterns.
 *   **Automated Root Cause Analysis:** Generates structured JSON predicting the Root Cause, Time to Impact, and Blast Radius.
-*   **Actionable Remediation:** Automatically issues a PreMortem document containing immediate remediation procedures before the system fully degrades.
 
 ### 4. Zero-Scroll Operational War Room
 *   **Fixed-Grid Architecture:** A strict, overflow-hidden CSS-Grid layout designed specifically for high-stress SRE operations. No scrolling, no context switching, zero cognitive overload.
 *   **Real-Time D3.js Force Simulation:** Renders the causal dependency graph in real-time at 60 FPS, providing immediate visual tracking of cascading failures.
-*   **Incident Replay Engine:** A powerful training utility driven by `requestAnimationFrame` that allows engineering teams to securely replay and analyze historical outages at variable speeds.
 
 ---
 
-## System Architecture
+## 🛡 STQA Validation & Reliability
 
-The platform operates on a decoupled, asynchronous, real-time architecture optimized for continuous stream processing.
+PreMortem was designed under rigorous Software Testing & Quality Assurance (STQA) protocols to ensure mission-critical stability:
 
-1. **Ingestion Layer:** Actively polls telemetry via robust background workers.
-2. **Buffer Management:** Streams data into fixed-size, thread-safe `CircularBuffers` to guarantee a constant `O(1)` memory footprint during extreme ingestion spikes.
-3. **Intelligence Loop:** Periodically computes Pearson matrices and Granger updates.
-4. **WebSocket Broadcaster:** Streams delta updates, AI predictions, and anomaly logs to connected client interfaces via an exponential backoff connection manager.
+*   **Statistical Stability:** Validated against edge cases (NaN injection, flat-line metrics, missing values). Rolling Circular Buffers strictly enforce `O(1)` memory footprints during ingestion floods.
+*   **AI Schema Integrity:** AI inference is strictly schema-bound. Structured JSON extraction guarantees the UI never receives malformed reasoning payloads or hallucinatory syntax.
+*   **WebSocket Resilience:** The frontend employs deterministic exponential backoff for seamless recovery during forced disconnect storms.
+*   **Replay Engine Synchronization:** Handled via custom `requestAnimationFrame` loops completely decoupled from React state batching, guaranteeing exact visual timing overlap between mathematical detection and actual user impact.
 
 ---
 
@@ -60,24 +91,16 @@ The platform operates on a decoupled, asynchronous, real-time architecture optim
 ### Prerequisites
 * Python 3.10+
 * Node.js 18+
-* Redis (Optional: for advanced pub/sub scaling)
 
 ### Backend Services Initialization
 ```bash
 cd premortem/backend
 python -m venv .venv
-
-# Activate Virtual Environment
 source .venv/bin/activate        # Unix/macOS
 .venv\Scripts\activate           # Windows
-
-# Install Dependencies
 pip install -r requirements.txt
-
-# Secure API Configuration
 echo "GROQ_API_KEY=your_production_key_here" > .env
 
-# Launch Uvicorn ASGI Server
 uvicorn main:app --reload --port 8000
 ```
 
@@ -85,18 +108,9 @@ uvicorn main:app --reload --port 8000
 ```bash
 cd premortem/frontend
 npm install
-
-# Launch Vite Development Server
 npm run dev
 ```
 
 ---
 
-## Operational Guide
-
-1.  **Production Monitoring:** Navigate to the local port specified by Vite (default: `http://localhost:5173`). The dashboard instantly establishes a WebSocket connection and will display "ALL SYSTEMS NOMINAL" under healthy telemetry.
-2.  **Incident Replay Activation:** To train on historical degradation, press the **`R`** key to trigger the Incident Replay Engine. Select an incident, engage playback, and observe the system detect and predict the failure prior to the User Impact marker.
-
----
-
-*Designed and engineered for highly available, mission-critical infrastructure. Engineered for Indianext.*
+*Designed for highly available, mission-critical infrastructure environments. Built for the Indianext Hackathon.*
