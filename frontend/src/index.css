@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body { 
+  margin: 0; 
+  height: 100%; 
+  overflow: hidden; 
+  background: #050810;
+  font-family: 'Inter', sans-serif;
+  color: #c9d1d9;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+}
+
+#app-grid {
+  display: grid;
+  grid-template-rows: 48px 1fr 120px;
+  grid-template-columns: 1fr 380px;
+  height: 100vh;
+  background: #050810;
+  font-family: 'Inter', sans-serif;
+}
+
+@layer utilities {
+  .metric-value, .timestamp, .service-name, 
+  .confidence-number, .event-sigma, .logo-text {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
+  .label-text, .description, .hypothesis-text {
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* Custom scrollbar for Anomaly Event Feed */
+::-webkit-scrollbar {
+  width: 2px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a2744;
+}
+
+@keyframes pulse-opacity {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.animate-pulse-fast {
+  animation: pulse-opacity 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes flash-border {
+  0% { border-bottom-color: #1a2744; }
+  20% { border-bottom-color: #ef4444; }
+  100% { border-bottom-color: #1a2744; }
+}
+
+.flash-border-bottom {
+  animation: flash-border 600ms ease-out;
+}
